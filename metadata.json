@@ -1,0 +1,8 @@
+{
+  "name": "Nexa 1337 Link Tree",
+  "description": "A virtual card and link tree for Nexa 1337.",
+  "requestFramePermissions": [],
+  "majorCapabilities": [
+    "MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"
+  ]
+}
