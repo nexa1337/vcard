@@ -270,6 +270,11 @@ export default function App() {
           </div>
         </div>
       )}
+      {/* Desktop QR Code */}
+      <div className="hidden lg:flex fixed bottom-8 right-8 flex-col items-center gap-3 z-40 animate-slide-up">
+        <span className="text-white text-[13px] font-bold tracking-wide">View on mobile</span>
+        <img src="/code.png" alt="QR Code" className="w-32 h-32 rounded-xl shadow-2xl object-contain" />
+      </div>
     </div>
   );
 }
