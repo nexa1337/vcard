@@ -1,5 +1,7 @@
 import {
   Brain,
+  Check,
+  Copy,
   Download,
   GraduationCap,
   Instagram,
@@ -52,7 +54,7 @@ const TOOLS_LINKS = [
   {
     id: 'nexa-secret-area',
     title: 'N E X A 1337 - Secret Area',
-    icon: <Lock className="w-5 h-5" />,
+    icon: <img src="/images/logo01.png" alt="Secret Area" className="w-8 h-8 object-contain scale-[1.35] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)] rounded-md" />,
     href: 'https://secretarea.vercel.app/',
   },
 ];
@@ -62,13 +64,14 @@ const SOCIAL_LINKS = [
   { id: 'instagram', icon: <Instagram className="w-full h-full" />, href: 'https://instagram.com/nexa1337' },
   { id: 'tiktok', icon: <TikTokIcon className="w-full h-full" />, href: 'https://tiktok.com/@nexa.1337' },
   { id: 'whatsapp', icon: <WhatsAppIcon className="w-full h-full" />, href: 'https://wa.me/+212723242286' },
-  { id: 'telegram', icon: <TelegramIcon className="w-full h-full" />, href: 'https://t.me/nexa1337agency' },
-  { id: 'discord', icon: <DiscordIcon className="w-full h-full" />, href: 'https://discord.com/invite/MgqvMyZv2b' },
+  { id: 'telegram', icon: <TelegramIcon className="w-full h-full" />, href: 'https://t.me/secretarea1337' },
+  { id: 'discord', icon: <DiscordIcon className="w-full h-full" />, href: 'https://discord.com/invite/pygmDWFAHK' },
 ];
 
 export default function App() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
+  const [copiedPasscode, setCopiedPasscode] = useState(false);
 
   useEffect(() => {
     // Check if user already dismissed it previously (using a new key to reset it for testing)
@@ -213,24 +216,57 @@ export default function App() {
           <section className="flex flex-col gap-3.5">
             <h2 className="text-center text-sm font-bold tracking-wide mb-1 text-white">N E X A 1337 Tools</h2>
             {TOOLS_LINKS.map((link) => (
-              <a
-                key={link.id}
-                href={link.href}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group relative w-full py-4 px-6 bg-white/[0.04] border border-white/10 rounded-2xl text-white text-[15px] font-semibold flex items-center justify-between shadow-sm overflow-hidden"
+              <React.Fragment key={link.id}>
+                {link.id === 'nexa-secret-area' && (
+                  <div className="flex items-center gap-4 mt-4 mb-2 opacity-80">
+                    <div className="h-px flex-1 bg-gradient-to-r from-transparent to-fuchsia-500/50" />
+                    <span className="text-[10px] uppercase tracking-[0.2em] text-fuchsia-300 font-bold">Exclusive</span>
+                    <div className="h-px flex-1 bg-gradient-to-l from-transparent to-fuchsia-500/50" />
+                  </div>
+                )}
+                <a
+                  href={link.href}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className={`group relative w-full ${
+                  link.id === 'nexa-secret-area'
+                    ? 'py-3.5 bg-gradient-to-r from-fuchsia-500/10 via-purple-500/5 to-indigo-500/10 border border-fuchsia-500/30 shadow-[0_0_15px_rgba(217,70,239,0.15)] hover:shadow-[0_0_25px_rgba(217,70,239,0.25)] hover:border-fuchsia-500/50'
+                    : 'py-4 bg-white/[0.04] border border-white/10 shadow-sm hover:border-white/20'
+                } px-6 rounded-2xl text-white text-[15px] font-semibold flex items-center justify-between overflow-hidden transition-all duration-300`}
               >
                 {/* Subtle sheen effect on hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
                 
-                <div className="flex items-center gap-3 relative z-10">
+                <div className="flex items-center gap-3 relative z-10 min-w-0">
                   <div className="w-8 h-8 rounded-lg bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400 shrink-0">
                     {link.icon}
                   </div>
-                  <span>{link.title}</span>
+                  <div className="flex flex-col items-start gap-1 overflow-hidden">
+                    <span className="truncate">{link.title}</span>
+                    {link.id === 'nexa-secret-area' && (
+                      <div className="flex items-center gap-1.5 text-[11px] sm:text-[12px] truncate">
+                        <Lock className="w-3 h-3 text-white/40 shrink-0" />
+                        <span className="text-white/50 font-medium">Passcode:</span>
+                        <button 
+                          onClick={(e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            navigator.clipboard.writeText('Wolfspace');
+                            setCopiedPasscode(true);
+                            setTimeout(() => setCopiedPasscode(false), 2000);
+                          }}
+                          className="flex items-center gap-1 text-fuchsia-400 font-bold bg-fuchsia-500/10 hover:bg-fuchsia-500/20 active:scale-95 transition-all px-2 py-0.5 rounded ml-0.5 border border-fuchsia-500/20"
+                        >
+                          {copiedPasscode ? <Check className="w-3 h-3 shrink-0" /> : <Copy className="w-3 h-3 shrink-0" />}
+                          {copiedPasscode ? 'Copied' : 'Wolfspace'}
+                        </button>
+                      </div>
+                    )}
+                  </div>
                 </div>
-                <span className="opacity-30 group-hover:opacity-100 transition-opacity relative z-10 text-white font-normal">→</span>
-              </a>
+                <span className="opacity-30 group-hover:opacity-100 transition-opacity relative z-10 text-white font-normal ml-3 shrink-0">→</span>
+                </a>
+              </React.Fragment>
             ))}
           </section>
 
