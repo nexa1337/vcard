@@ -12,9 +12,10 @@ import {
   QrCode,
   ShoppingBag,
   X,
+  Youtube,
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
-import { DiscordIcon, TelegramIcon, TikTokIcon, WhatsAppIcon } from './components/icons';
+import { DiscordIcon, TelegramIcon, TikTokIcon, WhatsAppIcon, KickIcon } from './components/icons';
 
 // Data structure for the links
 const SPACE_LINKS = [
@@ -57,6 +58,12 @@ const TOOLS_LINKS = [
     icon: <img src="/images/logo01.png" alt="Secret Area" className="w-8 h-8 object-contain scale-[1.35] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)] rounded-md" />,
     href: 'https://secretarea.vercel.app/',
   },
+];
+
+const STREAMING_LINKS = [
+  { id: 'kick', icon: <KickIcon className="w-full h-full text-[#53fc19]" />, href: 'https://kick.com/secretarea1337' },
+  { id: 'tiktok', icon: <TikTokIcon className="w-full h-full text-white" />, href: 'https://www.tiktok.com/@secretarea1337' },
+  { id: 'youtube', icon: <Youtube className="w-full h-full text-[#ff0000]" />, href: 'https://www.youtube.com/@SecretArea1337' },
 ];
 
 const SOCIAL_LINKS = [
@@ -218,10 +225,27 @@ export default function App() {
             {TOOLS_LINKS.map((link) => (
               <React.Fragment key={link.id}>
                 {link.id === 'nexa-secret-area' && (
-                  <div className="flex items-center gap-4 mt-4 mb-2 opacity-80">
-                    <div className="h-px flex-1 bg-gradient-to-r from-transparent to-fuchsia-500/50" />
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-fuchsia-300 font-bold">Exclusive</span>
-                    <div className="h-px flex-1 bg-gradient-to-l from-transparent to-fuchsia-500/50" />
+                  <div className="flex flex-col gap-4 mt-4 mb-2">
+                    <div className="flex items-center gap-4 opacity-80">
+                      <div className="h-px flex-1 bg-gradient-to-r from-transparent to-fuchsia-500/50" />
+                      <span className="text-[10px] uppercase tracking-[0.2em] text-fuchsia-300 font-bold">Exclusive</span>
+                      <div className="h-px flex-1 bg-gradient-to-l from-transparent to-fuchsia-500/50" />
+                    </div>
+                    
+                    {/* Exclusive Streaming Links */}
+                    <div className="flex items-center justify-center gap-6 w-full mb-1">
+                      {STREAMING_LINKS.map((sLink) => (
+                        <a
+                          key={sLink.id}
+                          href={sLink.href}
+                          target="_blank"
+                          rel="noopener noreferrer"
+                          className="w-7 h-7 opacity-70 hover:opacity-100 transition-all hover:scale-110 drop-shadow-[0_0_8px_rgba(255,255,255,0.1)]"
+                        >
+                          {sLink.icon}
+                        </a>
+                      ))}
+                    </div>
                   </div>
                 )}
                 <a
