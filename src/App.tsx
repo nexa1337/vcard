@@ -7,15 +7,19 @@ import {
   Instagram,
   Linkedin,
   Lock,
+  Info,
   MousePointerClick,
   MoreVertical,
   QrCode,
   ShoppingBag,
+  BadgeCheck,
   X,
   Youtube,
 } from 'lucide-react';
 import React, { useState, useEffect } from 'react';
 import { DiscordIcon, TelegramIcon, TikTokIcon, WhatsAppIcon, KickIcon } from './components/icons';
+
+import CustomCursor from './components/CustomCursor';
 
 // Data structure for the links
 const SPACE_LINKS = [
@@ -54,7 +58,7 @@ const TOOLS_LINKS = [
   },
   {
     id: 'nexa-secret-area',
-    title: 'N E X A 1337 - Secret Area',
+    title: 'SecretArea - Free Games & Tools',
     icon: <img src="/images/logo01.png" alt="Secret Area" className="w-8 h-8 object-contain scale-[1.35] drop-shadow-[0_0_8px_rgba(255,255,255,0.2)] rounded-md" />,
     href: 'https://secretarea.vercel.app/',
   },
@@ -129,7 +133,8 @@ export default function App() {
   };
 
   return (
-    <div className="min-h-screen bg-[#08080c] text-white flex justify-center font-sans relative">
+    <div className="min-h-screen bg-[#08080c] text-white flex justify-center font-sans relative overflow-x-hidden">
+      <CustomCursor />
       {/* Background gradients from Immersive UI theme */}
       <div className="fixed inset-0 z-0 pointer-events-none overflow-hidden">
         <div className="absolute top-[-20%] left-[-10%] w-[600px] h-[600px] bg-indigo-600/10 rounded-full blur-[140px]" />
@@ -225,8 +230,8 @@ export default function App() {
             {TOOLS_LINKS.map((link) => (
               <React.Fragment key={link.id}>
                 {link.id === 'nexa-secret-area' && (
-                  <div className="flex flex-col gap-4 mt-4 mb-2">
-                    <div className="flex items-center gap-4 opacity-80">
+                  <div className="flex flex-col gap-4 mt-4 mb-1">
+                    <div className="flex items-center gap-4 opacity-90">
                       <div className="h-px flex-1 bg-gradient-to-r from-transparent to-fuchsia-500/50" />
                       <span className="text-[10px] uppercase tracking-[0.2em] text-fuchsia-300 font-bold">Exclusive</span>
                       <div className="h-px flex-1 bg-gradient-to-l from-transparent to-fuchsia-500/50" />
@@ -248,16 +253,23 @@ export default function App() {
                     </div>
                   </div>
                 )}
-                <a
-                  href={link.href}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className={`group relative w-full ${
-                  link.id === 'nexa-secret-area'
-                    ? 'py-3.5 bg-gradient-to-r from-fuchsia-500/10 via-purple-500/5 to-indigo-500/10 border border-fuchsia-500/30 shadow-[0_0_15px_rgba(217,70,239,0.15)] hover:shadow-[0_0_25px_rgba(217,70,239,0.25)] hover:border-fuchsia-500/50'
-                    : 'py-4 bg-white/[0.04] border border-white/10 shadow-sm hover:border-white/20'
-                } px-6 rounded-2xl text-white text-[15px] font-semibold flex items-center justify-between overflow-hidden transition-all duration-300`}
-              >
+                <div className={link.id === 'nexa-secret-area' ? "relative w-full mt-2" : "w-full"}>
+                  {link.id === 'nexa-secret-area' && (
+                    <div className="absolute -top-2.5 right-4 z-20 flex items-center gap-1 bg-black/60 backdrop-blur-md px-2 py-0.5 rounded-[4px] shadow-[0_2px_8px_rgba(0,0,0,0.4)] border border-white/10">
+                      <Info className="w-2.5 h-2.5 text-white/90" />
+                      <span className="text-[9px] font-bold text-white tracking-wide">Sponsored</span>
+                    </div>
+                  )}
+                  <a
+                    href={link.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className={`group relative w-full ${
+                    link.id === 'nexa-secret-area'
+                      ? 'py-3.5 bg-gradient-to-r from-fuchsia-500/10 via-purple-500/5 to-indigo-500/10 border border-fuchsia-500/30 shadow-[0_0_15px_rgba(217,70,239,0.15)] hover:shadow-[0_0_25px_rgba(217,70,239,0.25)] hover:border-fuchsia-500/50'
+                      : 'py-4 bg-white/[0.04] border border-white/10 shadow-sm hover:border-white/20'
+                  } px-6 rounded-2xl text-white font-semibold flex items-center justify-between overflow-hidden transition-all duration-300`}
+                >
                 {/* Subtle sheen effect on hover */}
                 <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/5 to-transparent -translate-x-full group-hover:animate-[shimmer_1.5s_infinite]" />
                 
@@ -265,10 +277,10 @@ export default function App() {
                   <div className="w-8 h-8 rounded-lg bg-fuchsia-500/10 flex items-center justify-center text-fuchsia-400 shrink-0">
                     {link.icon}
                   </div>
-                  <div className="flex flex-col items-start gap-1 overflow-hidden">
-                    <span className="truncate">{link.title}</span>
+                  <div className="flex flex-col items-start gap-0.5 overflow-hidden py-0.5">
+                    <span className={`${link.id === 'nexa-secret-area' ? 'text-[12px] sm:text-[13px] whitespace-normal leading-tight' : 'text-[15px] truncate'} w-full`}>{link.title}</span>
                     {link.id === 'nexa-secret-area' && (
-                      <div className="flex items-center gap-1.5 text-[11px] sm:text-[12px] truncate">
+                      <div className="flex items-center gap-1.5 text-[11px] sm:text-[12px] mt-0.5 truncate">
                         <Lock className="w-3 h-3 text-white/40 shrink-0" />
                         <span className="text-white/50 font-medium">Passcode:</span>
                         <button 
@@ -289,7 +301,8 @@ export default function App() {
                   </div>
                 </div>
                 <span className="opacity-30 group-hover:opacity-100 transition-opacity relative z-10 text-white font-normal ml-3 shrink-0">→</span>
-                </a>
+                  </a>
+                </div>
               </React.Fragment>
             ))}
           </section>
