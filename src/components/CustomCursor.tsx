@@ -1,14 +1,28 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 export default function CustomCursor() {
-  const [position, setPosition] = useState({ x: 0, y: 0 });
+  const outerRef = useRef<HTMLDivElement>(null);
+  const innerRef = useRef<HTMLDivElement>(null);
+  
   const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
+    let animationFrameId: number;
+    let mouseX = 0;
+    let mouseY = 0;
+
     const updatePosition = (e: MouseEvent) => {
-      setPosition({ x: e.clientX, y: e.clientY });
+      mouseX = e.clientX;
+      mouseY = e.clientY;
+      
       if (!isVisible) setIsVisible(true);
+
+      // Use requestAnimationFrame for smooth DOM updates
+      if (outerRef.current && innerRef.current) {
+        outerRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+        innerRef.current.style.transform = `translate3d(${mouseX}px, ${mouseY}px, 0) translate(-50%, -50%)`;
+      }
     };
 
     const updateHoverState = (e: MouseEvent) => {
@@ -25,8 +39,8 @@ export default function CustomCursor() {
     const handleMouseLeave = () => setIsVisible(false);
     const handleMouseEnter = () => setIsVisible(true);
 
-    window.addEventListener('mousemove', updatePosition);
-    window.addEventListener('mouseover', updateHoverState);
+    window.addEventListener('mousemove', updatePosition, { passive: true });
+    window.addEventListener('mouseover', updateHoverState, { passive: true });
     document.addEventListener('mouseleave', handleMouseLeave);
     document.addEventListener('mouseenter', handleMouseEnter);
 
@@ -48,23 +62,19 @@ export default function CustomCursor() {
       >
         {/* Outer Ring */}
         <div
-          className={`absolute rounded-full border border-fuchsia-500/50 mix-blend-screen transition-all duration-300 ease-out -translate-x-1/2 -translate-y-1/2 ${
-            isHovering ? 'w-12 h-12 bg-fuchsia-500/10 scale-110' : 'w-8 h-8'
+          ref={outerRef}
+          className={`absolute top-0 left-0 rounded-full border border-fuchsia-500/50 mix-blend-screen transition-colors duration-300 ease-out will-change-transform ${
+            isHovering ? 'w-12 h-12 bg-fuchsia-500/10' : 'w-8 h-8'
           }`}
-          style={{
-            left: `${position.x}px`,
-            top: `${position.y}px`,
-          }}
+          style={{ transform: 'translate(-50%, -50%)' }}
         />
         {/* Inner Dot */}
         <div
-          className={`absolute rounded-full bg-fuchsia-400 shadow-[0_0_10px_rgba(232,121,249,0.8)] transition-all duration-150 -translate-x-1/2 -translate-y-1/2 ${
+          ref={innerRef}
+          className={`absolute top-0 left-0 rounded-full bg-fuchsia-400 shadow-[0_0_10px_rgba(232,121,249,0.8)] transition-all duration-150 will-change-transform ${
             isHovering ? 'w-1 h-1 opacity-50' : 'w-2 h-2 opacity-100'
           }`}
-          style={{
-            left: `${position.x}px`,
-            top: `${position.y}px`,
-          }}
+          style={{ transform: 'translate(-50%, -50%)' }}
         />
       </div>
     </>

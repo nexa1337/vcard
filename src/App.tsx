@@ -82,7 +82,6 @@ const SOCIAL_LINKS = [
 export default function App() {
   const [deferredPrompt, setDeferredPrompt] = useState<any>(null);
   const [showInstallPrompt, setShowInstallPrompt] = useState(false);
-  const [copiedPasscode, setCopiedPasscode] = useState(false);
 
   useEffect(() => {
     // Check if user already dismissed it previously (using a new key to reset it for testing)
@@ -279,25 +278,6 @@ export default function App() {
                   </div>
                   <div className="flex flex-col items-start gap-0.5 overflow-hidden py-0.5">
                     <span className={`${link.id === 'nexa-secret-area' ? 'text-[12px] sm:text-[13px] whitespace-normal leading-tight' : 'text-[15px] truncate'} w-full`}>{link.title}</span>
-                    {link.id === 'nexa-secret-area' && (
-                      <div className="flex items-center gap-1.5 text-[11px] sm:text-[12px] mt-0.5 truncate">
-                        <Lock className="w-3 h-3 text-white/40 shrink-0" />
-                        <span className="text-white/50 font-medium">Passcode:</span>
-                        <button 
-                          onClick={(e) => {
-                            e.preventDefault();
-                            e.stopPropagation();
-                            navigator.clipboard.writeText('Wolfspace');
-                            setCopiedPasscode(true);
-                            setTimeout(() => setCopiedPasscode(false), 2000);
-                          }}
-                          className="flex items-center gap-1 text-fuchsia-400 font-bold bg-fuchsia-500/10 hover:bg-fuchsia-500/20 active:scale-95 transition-all px-2 py-0.5 rounded ml-0.5 border border-fuchsia-500/20"
-                        >
-                          {copiedPasscode ? <Check className="w-3 h-3 shrink-0" /> : <Copy className="w-3 h-3 shrink-0" />}
-                          {copiedPasscode ? 'Copied' : 'Wolfspace'}
-                        </button>
-                      </div>
-                    )}
                   </div>
                 </div>
                 <span className="opacity-30 group-hover:opacity-100 transition-opacity relative z-10 text-white font-normal ml-3 shrink-0">→</span>
